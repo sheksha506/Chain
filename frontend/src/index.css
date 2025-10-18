@@ -1,0 +1,27 @@
+@import "tailwindcss";
+
+/* In your CSS file */
+.custom-scroll::-webkit-scrollbar {
+  display: none;
+}
+.custom-scroll {
+  -ms-overflow-style: none; /* IE and Edge */
+  scrollbar-width: none; /* Firefox */
+}
+
+
+/* Hide scrollbar but keep scroll functionality */
+.custom-scroll {
+  overflow-y: auto;
+  scrollbar-width: none; /* Firefox */
+}
+
+.custom-scroll::-webkit-scrollbar {
+  display: none; /* Chrome, Safari */
+}
+
+/* Prevent body/page from scrolling */
+html, body {
+  overflow: hidden;
+  height: 100%;
+}
