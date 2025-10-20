@@ -27,9 +27,30 @@ jobs:
         run: npm run build
         working-directory: ./frontend
 
-      - name: Docker build and push
+      # Optional BuildKit & caching (uncomment if you want to use it)
+      # - name: Set up Docker Buildx
+      #   uses: docker/setup-buildx-action@v3
+
+      # - name: Login to DockerHub
+      #   uses: docker/login-action@v3
+      #   with:
+      #     username: ${{ secrets.DOCKER_USERNAME }}
+      #     password: ${{ secrets.DOCKER_PASSWORD }}
+
+      # - name: Docker build and push with cache
+      #   uses: docker/build-push-action@v5
+      #   with:
+      #     context: ./frontend
+      #     push: true
+      #     tags: sekshavali922/frontend
+      #     cache-from: type=gha
+      #     cache-to: type=gha,mode=max
+
+      - name: Docker build and push (with retry)
         run: |
-          docker build -t sekshavali922/frontend ./frontend
+          for i in 1 2 3; do
+            docker build -t sekshavali922/frontend ./frontend && break || sleep 15
+          done
           echo "${{ secrets.DOCKER_PASSWORD }}" | docker login -u "${{ secrets.DOCKER_USERNAME }}" --password-stdin
           docker push sekshavali922/frontend
 
@@ -63,9 +84,11 @@ jobs:
         run: mvn clean install
         working-directory: ./backend_userService
 
-      - name: Docker build and push
+      - name: Docker build and push (with retry)
         run: |
-          docker build -t sekshavali922/user-service ./backend_userService
+          for i in 1 2 3; do
+            docker build -t sekshavali922/user-service ./backend_userService && break || sleep 15
+          done
           echo "${{ secrets.DOCKER_PASSWORD }}" | docker login -u "${{ secrets.DOCKER_USERNAME }}" --password-stdin
           docker push sekshavali922/user-service
 
@@ -100,8 +123,10 @@ jobs:
         run: mvn clean install
         working-directory: ./backend_messageService/message
 
-      - name: Docker build and push
+      - name: Docker build and push (with retry)
         run: |
-          docker build -t sekshavali922/message-service ./backend_messageService
+          for i in 1 2 3; do
+            docker build -t sekshavali922/message-service ./backend_messageService && break || sleep 15
+          done
           echo "${{ secrets.DOCKER_PASSWORD }}" | docker login -u "${{ secrets.DOCKER_USERNAME }}" --password-stdin
           docker push sekshavali922/message-service
