@@ -27,6 +27,15 @@ jobs:
         run: npm run build
         working-directory: ./frontend
 
+      - name: Docker build and push
+        run: |
+          docker build -t your-dockerhub-username/frontend ./frontend
+          echo "${{ secrets.DOCKER_PASSWORD }}" | docker login -u "${{ secrets.DOCKER_USERNAME }}" --password-stdin
+          docker push your-dockerhub-username/frontend
+        # 🔐 Add your Docker Hub username and password as GitHub secrets:
+        # DOCKER_USERNAME = your Docker Hub username
+        # DOCKER_PASSWORD = your Docker Hub password
+
   build-user-service:
     name: Build User Service
     runs-on: ubuntu-latest
@@ -56,6 +65,14 @@ jobs:
       - name: Build with Maven
         run: mvn clean install
         working-directory: ./backend_userService
+
+      - name: Docker build and push
+        run: |
+          docker build -t your-dockerhub-username/user-service ./backend_userService
+          echo "${{ secrets.DOCKER_PASSWORD }}" | docker login -u "${{ secrets.DOCKER_USERNAME }}" --password-stdin
+          docker push your-dockerhub-username/user-service
+          DOCKER_USERNAME = sekshavali922
+          DOCKER_PASSWORD = @Sheksha123 
 
   build-message-service:
     name: Build Message Service
@@ -87,3 +104,9 @@ jobs:
       - name: Build with Maven
         run: mvn clean install
         working-directory: ./backend_messageService
+
+      - name: Docker build and push
+        run: |
+          docker build -t your-dockerhub-username/message-service ./backend_messageService
+          echo "${{ secrets.DOCKER_PASSWORD }}" | docker login -u "${{ secrets.DOCKER_USERNAME }}" --password-stdin
+          docker push your-dockerhub-username/message-service
