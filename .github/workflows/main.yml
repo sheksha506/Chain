@@ -98,7 +98,7 @@ jobs:
 
       - name: Build with Maven
         run: mvn clean install
-        working-directory: ./backend_messageService
+        working-directory: ./backend_messageService/message
 
       - name: Docker build and push
         run: |
