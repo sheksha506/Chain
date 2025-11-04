@@ -17,13 +17,13 @@ RUN npm run build
 # Stage 2: Serve the app with Nginx
 FROM nginx:alpine
 
-# Copy custom nginx.conf from src folder
+# Copy custom nginx config file from src folder
 COPY src/nginx.config /etc/nginx/conf.d/default.conf
 
-# Copy built static files
+# Copy built React app from Stage 1
 COPY --from=build /app/build /usr/share/nginx/html
 
-# Expose port (React default: 3000, Nginx default: 80)
+# Expose Nginx port
 EXPOSE 80
 
 # Start Nginx server
