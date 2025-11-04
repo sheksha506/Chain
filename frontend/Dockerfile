@@ -18,7 +18,7 @@ RUN npm run build
 FROM nginx:alpine
 
 # Copy custom nginx.conf from src folder
-COPY src/nginx.conf /etc/nginx/conf.d/default.conf
+COPY src/nginx.config /etc/nginx/conf.d/default.conf
 
 # Copy built static files
 COPY --from=build /app/build /usr/share/nginx/html
